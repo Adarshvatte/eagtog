@@ -5,8 +5,8 @@
         "config": {
             "maxLambdaSize": "15mb",
             "runtime": "python3.9",
-            "maxDuration": 30,  
-            "memory": 1700      
+            "maxDuration": 30,
+            "memory": 1700
         }
     }],
     "routes": [
