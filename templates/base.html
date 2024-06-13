@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Organic Marketplace</title>
+    <link rel="icon" type="image/icon" href="{% static 'favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <a href="#" class="logo"> <i class="fa fa-cart-plus" aria-hidden="true">
+        </i> Eat OG</a>
+
+        <nav class="navbar">
+            <a href="{% url 'home' %}">Home</a>
+            {% comment %} <a href="{% url 'features' %}">Features</a> {% endcomment %}
+            <a href="{% url 'categories' %}">Categories</a>
+            <a href="{% url 'product' %}">Products</a>
+            <a href="{% url 'review' %}">Review</a>
+            <a href="{% url 'blog' %}">Blogs</a>
+            {% if user.is_authenticated and user.is_superuser %}
+            <a href="{% url 'salesReport' period='monthly' %}" class="links">Sales Report</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <a href="{% url 'orderStatus' %}">OrderStatus</a>
+            {% endif %}
+        </nav>
+
+        <div class="icons">
+            <div class="fa fa-bars" id="menu-btn"></div>
+            <div class="fa fa-search" id="search-btn"></div>
+            <a href="{% url 'cart_detail' %}"><div class="fa fa-shopping-cart" id="cart-btn"></div></a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}"><div class="fa fa-sign-out" id="login-btn"></div></a>
+            {% else %}
+            <a href="{% url 'login' %}"><div class="fa fa-user" id="login-btn"></div></a>
+            {% endif %}
+        </div>
+
+        <form action="/search/" class="search-form" method="get" >
+            <input type="search" id="query" name="query" placeholder="Search-Here">
+            <button><label for="query" class="fa fa-search"></label></button>
+        </form>
+
+    </header>
+    <!-- Header Section Ended-->
+    {% block content %}
+    
+    {% endblock content %}  
+    <!-- Footer Section Started-->
+<section class="footer">
+    <div class="box-container">
+        <div class="box">
+            <h3>Eat OG <i class="fa fa-shopping-basket"></i></h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nam.</p>
+            <div class="share">
+                <a href="https://www.facebook.com/" class="fa fa-facebook"></a>
+                <a href="https://twitter.com/VatteAdarsh/likes" class="fa fa-twitter"></a>
+                <a href="https://www.instagram.com/adarsh.v_002/" class="fa fa-instagram"></a>
+                <a href=" https://www.linkedin.com/in/adarsh-vatte-a01917292
+                " class="fa fa-linkedin"></a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h3>Contact Info</h3>
+            <a href="#" class="links"><i class="fa fa-phone"></i> +917798250125</a>
+            <a href="#" class="links"><i class="fa fa-phone"></i> 02471-316291</a>
+            <a href="#" class="links"><i class="fa fa-envelope"></i> adarshvatte99@gmail.com</a>
+            <a href="#" class="links"><i class="fa fa-map-marker"></i> Barul Tuljapur</a>
+        </div>
+
+        <div class="box">
+            <h3>Quick Links</h3>
+            <a href="{% url 'home' %}" class="links"><i class="fa fa-arrow-right"></i> Home</a>
+            {% if user.is_authenticated and user.is_superuser %}
+            <a href="{% url 'salesReport' period='monthly' %}" class="links"><i class="fa fa-arrow-right"></i>Sales Report</a>
+            {% endif %}
+            <a href="{% url 'product' %}" class="links"><i class="fa fa-arrow-right"></i> Products</a>
+            <a href="{% url 'categories' %}" class="links"><i class="fa fa-arrow-right"></i> Categories</a>
+            <a href="{% url 'blog' %}" class="links"><i class="fa fa-arrow-right"></i> Blogs</a>
+        </div>
+
+        <div class="box">
+            <h3>Newsletter</h3>
+            <p>Subscribe For Latest Updates</p>
+            <input type="email" placeholder="Your Email" class="email">
+            <input type="submit" value="Subscribe" class="btn">
+            <img src="{% static 'payment.png' %}" class="payment-img">
+        </div>
+    </div>
+
+<div class="credit">
+    Created by <span>Adarsh vatte</span> | All Rights Reserved
+</div>
+</section>
+<!-- Footer Section Ended-->
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

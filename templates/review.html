@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<br><br><br><br>
+<br><br>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    h1{
+        font-size:22px;
+        text-align:center;
+        margin-botton:20px;
+    }
+    label {
+        display: block;
+        font-weight: bold;
+        font-size:18px;
+        margin-bottom: 5px;
+    }
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    input[type="file"] {
+        margin-top: 5px;
+    }
+    select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .btn {
+        background-color: #fff;
+        color: black;
+        padding: 10px 50px;
+        border: 1px solid black;
+        border-radius: 5px;
+        font-size:20px;
+        cursor: pointer;
+        text-align: center; 
+        display: block; 
+        margin-left: auto; 
+        margin-right: auto; 
+    }
+    .btn:hover {
+        background-color: green;
+        color:white;
+    }
+</style>
+<div class="container">
+    <h1>Leave a Review</h1>
+    <form action="/review/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label for="review">Review:</label>
+            <textarea id="review" name="review" rows="5" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+                <option value="">Select a rating</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+<section class="review" id="review">
+    <h1 class="heading">Customer's <span>Review</span></h1>
+    <div class="swiper review-slider">
+        <div class="swiper-wrapper">
+            {% for i in data %}
+            <div class="swiper-slide box">
+                <img src="/media/{{ i.image }}">
+                <p>{{i.comment}}</p>
+                <h3>{{i.name}}</h3>
+                <div class="stars">
+                    {% if i.rate == 1 %}
+                    <i class="fa fa-star"></i>
+                    {% elif i.rate == 2 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% elif i.rate == 3 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% elif i.rate == 4 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% elif i.rate == 5 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% endif %}
+                </div> 
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    </section>
+{% endblock  %}

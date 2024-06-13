@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load cart_tag %}
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+    
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    .message-box {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        text-align: center;
+    }
+    
+    .message-box h1 {
+        color: #6a5acd; /* Adjust color as needed */
+        margin-bottom: 20px;
+        font-size: 25px;
+    }
+    
+    .message-box p {
+        color: #6a5acd; /* Adjust color as needed */
+        margin-bottom: 30px;
+        font-size: 20px;
+    }
+    
+    .btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    
+    .shopping-cart {
+        border: 1px solid;
+        position: relative;
+        top: 50%;
+        left: 40%;
+        padding: 1rem;
+        box-shadow: var(--box-shodow);
+        width: 35rem;
+        background: white;
+    }
+    
+    .shopping-cart.active {
+        right: 2rem;
+        transition: .4s linear;
+    }
+    
+    .shopping-cart .box {
+        border: 0.5px solid black;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        margin: 1rem 0;
+    }
+    
+    .shopping-cart .box img {
+        height: 10rem;
+    }
+    
+    .shopping-cart .box .fa-trash {
+        font-size: 2rem;
+        position: absolute;
+        top: 50%;
+        right: 2rem;
+        cursor: pointer;
+        color: var(--light-color);
+        transform: translateY(-50%);
+    }
+    
+    .shopping-cart .box .fa-trash:hover {
+        color: var(--green);
+    }
+    
+    .shopping-cart .box .content h3 {
+        color: var(--black);
+        font-size: 1.7rem;
+        padding-bottom: 1rem;
+    }
+    
+    .shopping-cart .box .content span {
+        color: var(--light-color);
+        font-size: 1.6rem;
+    }
+    
+    .shopping-cart .box .content .quantity {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 50%;
+        margin-top: 10px;
+    }
+    
+    .shopping-cart .box .content .quantity-input {
+        width: 30%;
+        height: 100%;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin: 0 5px;
+    }
+    
+    .shopping-cart .box .content .decrement,
+    .shopping-cart .box .content .increment {
+        width: 20%;
+        height: 100%;
+        font-size: 18px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    
+    .shopping-cart .total {
+        font-size: 2.5rem;
+        padding: 1rem 0;
+        text-align: center;
+        color: var(--black);
+    }
+    
+    .shopping-cart .btn {
+        display: block;
+        text-align: center;
+        margin: 1rem 0;
+    }
+    
+    .btn {
+        border: .2rem solid black;
+        margin-top: 1rem;
+        display: inline-block;
+        padding: .8rem 3rem;
+        font-size: 1.7rem;
+        border-radius: .5rem;
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+    
+    .btn:hover {
+        background: green;
+        color: white;
+    }
+    
+    .clear-cart-btn {
+        border: .1rem solid black;
+        margin-top: 1rem;
+        display: inline-block;
+        padding: .5rem 1.5rem;
+        font-size: 1.4rem;
+        border-radius: .5rem;
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+    
+    .clear-cart-btn:hover {
+        background: red;
+        color: white;
+    }
+
+    .shopping-cart .btn {
+        display: block;
+        text-align: center;
+        margin: 1rem 0;
+        width: calc(100% - 0px);
+        max-width: 100%;
+    }
+    
+    .clear-cart-btn {
+        border: .1rem solid black;
+        margin-top: 1rem;
+        float: right; /* Position clear cart button on the right side */
+        padding: .5rem 1.5rem;
+        font-size: 1.4rem;
+        border-radius: .5rem;
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+    
+    .clear-cart-btn:hover {
+        background: red;
+        color: white;
+    }
+    
+    
+</style>
+
+<br><br><br><br><br>
+<br><br>
+{% if request.session.cart|length < 1 %}
+<div class="container">
+    <div class="message-box">
+        <h1>Your Cart is Empty</h1>
+        <p>Add items to your cart to proceed with your purchase.</p>
+        <a href="{% url 'product' %}" class="btn">Browse Products</a>
+    </div>
+</div>
+{% else %}
+<h1 style="margin-left:45%">Shopping Cart</h1>
+<div class="shopping-cart">
+    {% for key, item in request.session.cart.items %}
+    <div class="box">
+        <a href="{% url 'item_clear' item.product_id %}"><i class="fa fa-trash"></i></a>
+        <img src="{{ item.image }}">
+        <div class="content">
+            <h3>{{ item.name }}</h3>
+            <span class="price">₹{{ item.price }}/-</span>
+            <div class="quantity">
+                <a href="{% if item.quantity > 1 %}{% url 'item_decrement' item.product_id %}{% endif %}">
+                    <button class="decrement" {% if item.quantity == 1 %}disabled{% endif %}>-</button>
+                </a>
+                <input type="text" value="{{ item.quantity }}" class="quantity-input">
+                <a href="{% url 'item_increment' item.product_id %}">
+                    <button class="increment">+</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <a href="{% url 'cart_clear' %}"><button class="clear-cart-btn">Clear Cart</button></a>
+    <div class="total">
+        Total: ₹{{cart_total_amount}}
+    </div>
+    <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        <input value="{{cart_total_amount}}" name="amount" hidden>
+        <a ><button type="submit" class="btn">Checkout</button></a>
+    </form>
+</div>
+<br><br><br>
+<br><br><br>
+{% endif %}
+{% endblock  %}

@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load cart_tag %}
+<style>
+    .shopping-cart{
+        border: 1px solid;
+        position: relative;
+        top: 50%;
+        left: 40%;
+        {% comment %} transform: translate(-50%, -50%); {% endcomment %}
+        padding: 1rem;
+        {% comment %} border-radius: .5rem; {% endcomment %}
+        box-shadow: var(--box-shodow);
+        width: 35rem;
+        background: white;
+    }
+    
+    .shopping-cart.active{
+        right: 2rem;
+        transition: .4s linear;
+    }
+    
+    .shopping-cart .box{
+        border: 0.5px solid black;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        margin: 1rem 0;
+    }
+    
+    .shopping-cart .box img{
+        height: 10rem;
+    }
+    
+    .shopping-cart .box .fa-trash{
+        font-size: 2rem;
+        position: absolute;
+        top:50%;
+        right:2rem;
+        cursor: pointer;
+        color: var(--light-color);
+        transform: translateY(-50%);
+    }
+    
+    .shopping-cart .box .fa-trash:hover{
+        color: var(--green);
+    }
+    
+    .shopping-cart .box .content h3{
+        color:var(--black);
+        font-size: 1.7rem;
+        padding-bottom: 1rem;
+    }
+    
+    .shopping-cart .box .content span{
+        color:var(--light-color);
+        font-size: 1.6rem;
+        {% comment %} display: flex;
+        flex-direction: row;
+        justify-content: space-between; {% endcomment %}
+    }
+    
+    .shopping-cart .box .content .quantity{
+        padding-left: 1rem;
+    }
+    
+    .shopping-cart .total{
+        font-size: 2.5rem;
+        padding: 1rem 0;
+        text-align: center;
+        color: var(--black);
+    }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 50%;
+        margin-top: 10px; 
+    }
+    
+    .quantity-input {
+        width: 20%;
+        height: 100%;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin: 0 5px;
+    }
+
+    .btn{
+        border: .2rem solid black;
+        margin-top: 1rem;
+        display: inline-block;
+        padding: .8rem 3rem;
+        font-size: 1.7rem;
+        border-radius: .5rem;
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+
+    .btn:hover{
+        background: green;
+        color: white;
+    }
+    
+    .clear-cart-btn {
+        border: .1rem solid black;
+        margin-top: 1rem;
+        margin-left:22.3rem;
+        display: inline-block;
+        padding: .5rem 1.5rem;
+        font-size: 1.4rem;
+        border-radius: .5rem;
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+    
+    .clear-cart-btn:hover{
+        background: red;
+        color: white;
+    }
+
+    .form-container {
+        max-width: 400px; /* Adjust width as needed */
+        margin: 0 auto; /* Center the form horizontally */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    
+    /* Style for the payment method options */
+    .payment-method {
+        margin-bottom: 20px;
+    }
+    
+    .payment-method h3 {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+    
+    .payment-method input[type="radio"] {
+        margin-right: 10px;
+    }
+    
+    .payment-method label {
+        font-size: 16px;
+    }
+    
+    /* Style for the submit button */
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        font-size: 18px;
+        color: black;
+        background-color: #fff; /* Change to desired button color */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<br><br><br><br><br>
+<br><br>
+<div class="shopping-cart">
+    {% for key, item in request.session.cart.items %}
+    <div class="box">
+        <img src="{{ item.image }}">
+        <div class="content">
+            <h3>{{ item.name }}</h3>
+            <span class="price">₹{{ item.price }}/-</span>
+            <div class="quantity">
+                <input type="text" value="{{ item.quantity }}" class="quantity-input">
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="total">
+        Payble Amount: ₹{{cart_total_amount}}
+    </div>
+    <form action="/thankYou/" method="post" onsubmit="return validateForm()" class="form-container">
+        {% csrf_token %}
+        <div class="payment-method">
+            <h3>Payment Method</h3>
+            <input type="radio" id="rzp-button1" name="payment_method" value="Direct-Bank-Transfer" required>
+            <label for="bank-transfer">Direct Bank Transfer</label><br>
+            <input type="radio" id="cash-on-delivery" name="payment_method" value="cash-on-delivery" required>
+            <label for="cash-on-delivery">Cash on Delivery</label><br>
+            
+        </div>
+        <button type="submit" class="btn">Place Order</button>
+    </form>
+    
+    
+</div>
+<br><br><br>
+<br><br><br>
+<form action="{% url 'thankYou' %}" method="post">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_fYVY7gEhEDc2V3", 
+    "amount": "50000", 
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": "{{order_id}}", 
+    "callback_url": "http://127.0.0.1:8000/thankYou/",
+    "prefill": { 
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000" 
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+
+function validateForm() {
+    var paymentMethods = document.getElementsByName('payment_method');
+    var isChecked = false;
+    for (var i = 0; i < paymentMethods.length; i++) {
+        if (paymentMethods[i].checked) {
+            isChecked = true;
+            break;
+        }
+    }
+    if (!isChecked) {
+        alert('Please select a payment method.');
+        return false;
+    }
+    return true;
+}
+</script>
+</form>
+{% endblock  %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<br><br><br><br><br>
+<section class="blogs" id="blogs">
+    <h1 class="heading">Our <span>Blogs</span></h1>
+    <div class="box-container">
+        <div class="box">
+            <img src="{% static 'vege.jpg' %}">
+            <div class="content">
+                <div class="icons">
+                    <a href="#"><i class="fa fa-user"></i>By User</a>
+                    <a href="#"><i class="fa fa-calendar"></i></a>
+                </div>
+                <h3>Fresh And Organic Vegetables</h3>
+                <p>Vegetables are nutrient powerhouses, offering an array of vitamins, minerals, and <a href="{% url 'blogVege' %}">read more</a></p>
+                <a href="{% url 'blogVege' %}" class="btn">Read More</a>
+            </div>
+        </div>
+    
+        <div class="box">
+            <img src="{% static 'fruits.jpg' %}">
+            <div class="content">
+                <div class="icons">
+                    <a href="#"><i class="fa fa-user"></i>By User</a>
+                    <a href="#"><i class="fa fa-calendar"></i></a>
+                </div>
+                <h3>Fresh And Organic Fruits</h3>
+                <p>Fruits are nutritional powerhouses, providing essential vitamins, minerals, and <a href="{% url 'blogFruit' %}">read more</a></p>
+                <a href="{% url 'blogFruit' %}" class="btn">Read More</a>
+            </div>
+        </div>
+    
+        <div class="box">
+            <img src="{% static 'dairy.jpg' %}">
+            <div class="content">
+                <div class="icons">
+                    <a href="#"><i class="fa fa-user"></i>By User</a>
+                    <a href="#"><i class="fa fa-calendar"></i></a>
+                </div>
+                <h3>Fresh And Organic Dairy Products</h3>
+                <p>Dairy products encompass a wide range of foods derived from milk, including fluid milk <a href="{% url 'blogDairy' %}">read more</a></p>
+                <a href="{% url 'blogDairy' %}" class="btn">Read More</a>
+            </div>
+        </div>
+    
+    </div>
+    </section>
+
+{% endblock  %}

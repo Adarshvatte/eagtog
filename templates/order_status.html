@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<br><br><br><br><br><br><br><br>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 1px; /* Reduced padding */
+    }
+    
+    .heading {
+        flex: 1;
+        text-align: center;
+        font-size: 15px;
+    }
+    
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+    
+    .info {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .status {
+        color: green;
+    }
+    
+
+</style>
+<div class="container">
+    <h1>Order Status</h1>
+    <div class="order">
+        <div class="order-header">
+            <div class="heading">Order ID</div>
+            <div class="heading">Status</div>
+            <div class="heading">Amount</div>
+            <div class="heading">Payment Method</div>
+        </div>
+        {% for order in orders %}
+        <div class="order-item">
+            <div class="info">{{ order.payment_id }}</div>
+            <div class="info status">Shipped</div>
+            <div class="info">{{ order.total_amount }}</div>
+            <div class="info">{{ order.payment_method|slice:"7: " }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock  %}

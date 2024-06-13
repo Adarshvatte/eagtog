@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<br><br><br><br><br>
+<section class="features" id="features">
+    <h1 class="heading">Our <span>Features</span></h1>
+    <div class="box-container">
+        <div class="box">
+            <img src="{% static 'feature-img-1.png' %}">
+            <h3>Fresh And Organic</h3>
+            <p>Organic products encompass a wide range of items, including food, clothing, personal care products, and household goods read more</p>
+            <a href="{% url 'featureFresh' %}" class="btn">Read More</a>
+        </div>
+        <div class="box">
+            <img src="{% static 'feature-img-2.png' %}">
+            <h3>Free Delivery</h3>
+            <p>Outline any conditions or requirements for free delivery read more..</p>
+            <a href="{% url 'freeDel' %}" class="btn">Read More</a>
+        </div>
+        <div class="box">
+            <img src="{% static 'feature-img-3.png' %}">
+            <h3>Easy Payments</h3>
+            <p>At eat organic, we understand the importance of seamless and convenient payment options read more..</p>
+            <a href="{% url 'easyPay' %}" class="btn">Read More</a>
+        </div>
+    </div>
+    
+    </section>
+{% endblock  %}

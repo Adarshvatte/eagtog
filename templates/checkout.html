@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<br><br><br><br><br>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .checkout-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    h2 {
+        text-align: center;
+    }
+    
+    form {
+        margin-top: 20px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+    
+    .half {
+        flex: 0 0 calc(50% - 5px);
+    }
+    
+    button {
+        background-color: #fff;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+    }
+    
+    button:hover {
+        background-color: green;
+        color:#fff;
+    }
+       
+</style>
+<div class="checkout-container">
+    <h2>Checkout</h2>
+    <form action="/placeorder/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="half">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first_name" value="{{user.first_name}}" readonly>
+                <input type="text" name="order_id" value="{{order_id}}" hidden>
+                <input type="text" name="payment" value="{{payment}}" hidden>
+            </div>
+            <div class="half">
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last_name" value="{{user.last_name}}" readonly  >
+            </div>
+        </div>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required>
+ 
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="{{user.email}}" required readonly>
+        
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country" required>
+        
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" required></textarea>
+
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        
+        <div class="form-group">
+            <div class="half">
+                <label for="state">State:</label>
+                <select id="state" name="state" required>
+                    <option value="">Select State</option>
+                </select>
+            </div>
+            <div class="half">
+                <label for="city">City:</label>
+                <select id="city" name="city" required>
+                    <option value="">Select City</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="half">
+                <label for="zipcode">Postal/Zipcode:</label>
+                <input type="text" id="zipcode" name="zipcode" required>
+            </div>
+
+            <div class="half">
+                <label for="total_amount">Total Amount:</label>
+                <input type="text" id="total_amount" name="total_amount" value="₹{{cart_total_amount}}" required readonly>
+            </div>
+            <div class="half">
+                <label for="state">Payment Method:</label>
+                <select id="payment_method" name="payment_method" required>
+                    <option value="">Select Payment Method</option>
+                    <option value="Direct Bank Transfer">Direct Bank Transfer</option>
+                    <option value="Cash On Delivery">Cash On Delivery</option>
+                </select>
+            </div>
+
+        </div>
+        
+
+        <a href="{% url 'placeorder' %}"><button type="submit">Continue</button></a>
+
+    </form>
+</div>
+<script>
+
+const statesAndCities = {
+    
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Solapur","Dharashiv", "Tuljapur", "Thane", "Amravati", "Navi Mumbai", "Kolhapur", "Akola", "Ahmednagar", "Satara", "Jalgaon", "Malegaon", "Sangli", "Latur", "Dhule", "Nanded", "Ichalkaranji"],
+    
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Varanasi", "Allahabad", "Meerut", "Bareilly", "Aligarh", "Moradabad", "Saharanpur", "Gorakhpur", "Noida", "Firozabad", "Jhansi", "Muzaffarnagar", "Mathura", "Budaun", "Rampur", "Shahjahanpur"],
+        
+    "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Arrah", "Begusarai", "Katihar", "Munger", "Chapra", "Danapur", "Saharsa", "Sasaram", "Hajipur", "Dehri", "Siwan", "Motihari", "Nawada", "Bagaha"],
+        
+    "West Bengal": ["Kolkata", "Howrah", "Asansol", "Siliguri", "Durgapur", "Bardhaman", "Malda", "Baharampur", "Habra", "Kharagpur", "Shantipur", "Dankuni", "Dhulian", "Ranaghat", "Haldia", "Raiganj", "Krishnanagar", "Nabadwip", "Midnapore", "Jalpaiguri"],
+        
+    "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Rewa", "Chhindwara", "Shivpuri", "Vidisha", "Guna", "Chhatarpur", "Damoh", "Mandsaur", "Khargone", "Neemuch", "Pithampur"]
+
+};
+
+function populateStates() {
+    const stateSelect = document.getElementById("state");
+    for (const state in statesAndCities) {
+        const option = document.createElement("option");
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+    }
+}
+
+function populateCities() {
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+    const selectedState = stateSelect.value;
+
+
+    citySelect.innerHTML = '<option value="">Select City</option>';
+
+
+    if (selectedState && statesAndCities[selectedState]) {
+        statesAndCities[selectedState].forEach(city => {
+            const option = document.createElement("option");
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    }
+}
+
+
+document.getElementById("state").addEventListener("change", populateCities);
+
+document.getElementById('date').valueAsDate = new Date();
+
+populateStates();
+
+</script>
+<br><br><br>
+{% endblock  %}

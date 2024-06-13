@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<br><br><br><br><br>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    
+    th, td {
+        padding: 10px;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-align: left;
+    }
+
+.period-selector {
+    margin-bottom: 20px;
+}
+
+.period-selector a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+.period-selector a:hover {
+    background-color: #e0e0e0;
+}
+
+    
+</style>
+<div class="container">
+    <h1>{{ period }} Sales Report</h1>
+    <div class="period-selector">
+        <a href="{% url 'salesReport' period='daily' %}">Daily</a>
+        <a href="{% url 'salesReport' period='monthly' %}">Monthly</a>
+        <a href="{% url 'salesReport' period='quarterly' %}">Quarterly</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Sales</th>
+                {% comment %} <th>Date</th> {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in sales_data %}
+            <tr>
+                <td>{{ data.product }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>₹{{ data.total_sales }}</td>
+                {% comment %} <td>{{ data.order_date }}</td> {% endcomment %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock  %}

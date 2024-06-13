@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<style>
+    .login-form {
+        width: 400px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    
+    .login-form h3 {
+        margin-top: 0;
+    }
+    
+    .box {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    
+    p {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+    
+</style>
+<br><br><br><br><br><br><br><br>
+<br><br>
+<form action="{% url 'login' %}" class="login-form" method="post">
+    {% csrf_token %}
+    <h1>Login now</h1>
+    <br>
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    <input type="text" name="username" placeholder="Enter your Username" class="box">
+    <input type="password" name="password" placeholder="Enter your password" class="box">
+    <p>Forgot Your password <a href="{% url 'forgotPass' %}">click here</a> </p>
+    <p>Dont't have an Account <a href="{% url 'register' %}">Create here</a> </p>
+    <input type="submit" value="login now" class="btn">
+</form>
+<br><br><br>
+{% endblock  %}

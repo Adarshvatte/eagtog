@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<script>
+    .stars a{
+        color:black;
+        font-size:15px;
+    }   
+</script>
+<!-- Banner Section Started-->
+<section class="home" id="home">
+    <div class="content">
+        <h3>Fresh And <span>Organic</span> Products For You</h3>
+        <p>Welcome to Eat OrGanic Taste the difference with our fresh, sustainably sourced organic produce. From farm to table, we're dedicated to bringing you the best in wholesome goodness. Join us in nourishing your body and supporting local communities, one organic bite at a time.</p>
+    </div>
+</section>
+<!-- Banner Section Ended-->
+
+<!-- Features Section Started-->
+<section class="features" id="features">
+<h1 class="heading">Our <span>Features</span></h1>
+<div class="box-container">
+    <div class="box">
+        <img src="{% static 'feature-img-1.png' %}">
+        <h3>Fresh And Organic</h3>
+        <p>Organic products encompass a wide range of items, including food, clothing, personal care products, and household goods read more</p>
+        <a href="{% url 'featureFresh' %}" class="btn">Read More</a>
+    </div>
+    <div class="box">
+        <img src="{% static 'feature-img-2.png' %}">
+        <h3>Free Delivery</h3>
+        <p>Outline any conditions or requirements for free delivery read more..</p>
+        <a href="{% url 'freeDel' %}" class="btn">Read More</a>
+    </div>
+    <div class="box">
+        <img src="{% static 'feature-img-3.png' %}">
+        <h3>Easy Payments</h3>
+        <p>At eat organic, we understand the importance of seamless and convenient payment options read more..</p>
+        <a href="{% url 'easyPay' %}" class="btn">Read More</a>
+    </div>
+</div>
+
+</section>
+<!-- Features Section Ended-->
+
+<!-- Category Section Started-->
+<section class="categories" id="categories">
+    <h1 class="heading">Product <span>Categories</span></h1>
+    <div class="box-container">
+        {% for i in items %}
+        <div class="box">
+            <img src="/media/{{i.image}}">
+            <h3>{{i.heading}}</h3>
+            <p>{{i.offer}}</p>
+            <a href="{% url 'product' %}" class="btn">Shop Now</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!-- Category Section Ended-->
+
+<!-- Product Section Started-->
+<section class="products" id="products">
+    <h1 class="heading">Our <span>Products</span></h1>
+    
+    <div class="swiper product-slider">
+        <div class="swiper-wrapper">
+            {% for product in products %}
+            {% if product.category.name == "Fruits" %}
+            <div class="swiper-slide box">
+                <img src="/media/{{ product.image }}">
+                <h1>{{ product.name }}</h1>
+                <div class="price">₹{{ product.price }}</div>
+                <div class="stars">
+                    <a href="{% url 'review' %}">Check/Write Review</a>
+                </div>
+                <a href="{% url 'cart_add' product.id %}" class="btn">Add to Cart</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="swiper product-slider">
+        <div class="swiper-wrapper">
+            {% for product in products %}
+            {% if product.category.name == "Vegetables" %}
+            <div class="swiper-slide box">
+                <img src="/media/{{ product.image }}">
+                <h1>{{ product.name }}</h1>
+                <div class="price">₹{{ product.price }}</div>
+                <div class="stars">
+                    <a href="{% url 'review' %}">Check/Write Review</a>
+                </div>
+                <a href="{% url 'cart_add' product.id %}" class="btn">Add to Cart</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>    
+
+<!-- Product Section Ended-->
+
+<!-- Review Section Started-->
+<section class="review" id="review">
+    <h1 class="heading">Customer's <span>Review</span></h1>
+    <div class="swiper review-slider">
+        <div class="swiper-wrapper">
+            {% for i in data %}
+            <div class="swiper-slide box">
+                <img src="/media/{{i.image}}">
+                <p>{{i.comment}}</p>
+                <h3>{{i.name}}</h3>
+                <div class="stars">
+                    {% if i.rate == 1 %}
+                    <i class="fa fa-star"></i>
+                    {% elif i.rate == 2 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% elif i.rate == 3 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% elif i.rate == 4 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% elif i.rate == 5 %}
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    {% endif %}
+                </div> 
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    </section>
+
+<!-- Review Section Ended-->
+
+<!-- Blog Section Started-->
+
+<section class="blogs" id="blogs">
+<h1 class="heading">Our <span>Blogs</span></h1>
+<div class="box-container">
+    <div class="box">
+        <img src="{% static 'vege.jpg' %}">
+        <div class="content">
+            <div class="icons">
+                <a href="#"><i class="fa fa-user"></i>By User</a>
+                <a href="#"><i class="fa fa-calendar"></i></a>
+            </div>
+            <h3>Fresh And Organic Vegetables</h3>
+            <p>Vegetables are nutrient powerhouses, offering an array of vitamins, minerals, and <a href="{% url 'blogVege' %}">read more</a></p>
+            <a href="{% url 'blogVege' %}" class="btn">Read More</a>
+        </div>
+    </div>
+
+    <div class="box">
+        <img src="{% static 'fruits.jpg' %}">
+        <div class="content">
+            <div class="icons">
+                <a href="#"><i class="fa fa-user"></i>By User</a>
+                <a href="#"><i class="fa fa-calendar"></i></a>
+            </div>
+            <h3>Fresh And Organic Fruits</h3>
+            <p>Fruits are nutritional powerhouses, providing essential vitamins, minerals, and <a href="{% url 'blogFruit' %}">read more</a></p>
+            <a href="{% url 'blogFruit' %}" class="btn">Read More</a>
+        </div>
+    </div>
+
+    <div class="box">
+        <img src="{% static 'dairy.jpg' %}">
+        <div class="content">
+            <div class="icons">
+                <a href="#"><i class="fa fa-user"></i>By User</a>
+                <a href="#"><i class="fa fa-calendar"></i></a>
+            </div>
+            <h3>Fresh And Organic Dairy Products</h3>
+            <p>Dairy products encompass a wide range of foods derived from milk, including fluid milk <a href="{% url 'blogDairy' %}">read more</a></p>
+            <a href="{% url 'blogDairy' %}" class="btn">Read More</a>
+        </div>
+    </div>
+
+</div>
+</section>
+
+<!-- Blog Section Ended-->
+{% endblock %}

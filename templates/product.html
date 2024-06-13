@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+br
+<br><br><br><br><br><br>
+
+<!-- Product Section Started-->
+<section class="products" id="products">
+    <h1 class="heading">Our <span>Products</span></h1>
+    
+    <div class="swiper product-slider">
+        <div class="swiper-wrapper">
+            {% for product in products %}
+            {% if product.category.name == "Fruits" %}
+            <div class="swiper-slide box">
+                <img src="/media/{{ product.image }}">
+                <h1>{{ product.name }}</h1>
+                <div class="price">₹{{ product.price }}</div>
+                <div class="stars">
+                    <a href="{% url 'review' %}">Check/Write Review</a>
+                </div>
+                <a href="{% url 'cart_add' product.id %}" class="btn">Add to Cart</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="swiper product-slider">
+        <div class="swiper-wrapper">
+            {% for product in products %}
+            {% if product.category.name == "Vegetables" %}
+            <div class="swiper-slide box">
+                <img src="/media/{{ product.image }}">
+                <h1>{{ product.name }}</h1>
+                <div class="price">₹{{ product.price }}</div>
+                <div class="stars">
+                    <a href="{% url 'review' %}">Check/Write Review</a>
+                </div>
+                <a href="{% url 'cart_add' product.id %}" class="btn">Add to Cart</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+</section>    
+
+    <!-- Product Section Ended-->
+{% endblock  %}
