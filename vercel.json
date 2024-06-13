@@ -2,14 +2,13 @@
     "builds": [{
         "src": "eatog/wsgi.py",
         "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
-    }],
-    "functions": {
-        "api/wsgi.py": {
-            "memory": 1700,  
-            "maxDuration": 30  
+        "config": {
+            "maxLambdaSize": "15mb",
+            "runtime": "python3.9",
+            "maxDuration": 30,  // Increase max duration if your function needs more time
+            "memory": 1700      // Adjust memory as needed
         }
-    },
+    }],
     "routes": [
         {
             "src": "/(.*)",
@@ -17,4 +16,3 @@
         }
     ]
 }
-
