@@ -4,6 +4,12 @@
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
     }],
+    "functions": {
+        "api/wsgi.py": {
+            "memory": 1700,  // Adjust memory as needed
+            "maxDuration": 30  // Increase max duration if your function needs more time
+        }
+    },
     "routes": [
         {
             "src": "/(.*)",
@@ -11,3 +17,4 @@
         }
     ]
 }
+
